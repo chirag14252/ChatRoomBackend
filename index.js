@@ -12,6 +12,7 @@ const io = new Server(serverInstance,{cors: {
   }});
 //we have established a connection
 io.on('connection',(socket)=>{
+ 
     //we are listening the events
    socket.on("chat",(payload)=>{
      io.emit("chat",payload);
