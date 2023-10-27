@@ -3,9 +3,22 @@ import http from "http";
 import { json } from "express";
 import {Server} from "socket.io";
 import cors from "cors";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import MessageModel from "./Models/Message.js";
+dotenv.config();
 const app = express();
-app.use(json())
+
+app.use(json());
+app.use(cors());
 const PORT = 3000;
+const mongoDB_URL = process.env.URL;
+mongoose.connect(`${mongoDB_URL}`).then(()=>{
+  console.log("database connected successfully");
+})
+
+
+
 const serverInstance = http.createServer(app);
 const io = new Server(serverInstance,{cors: {
     origin: '*',
@@ -17,6 +30,37 @@ io.on('connection',(socket)=>{
    socket.on("chat",(payload)=>{
      io.emit("chat",payload);
    })
+})
+
+app.post("/userActivity",(req,res)=>{
+  const username = req.body.username;
+  const message = req.body.message;
+  MessageModel.create({
+    username,message
+  }).then((data,err)=>{
+  if(data){
+    return res.status(201).json({
+      message:"message sent successfully"
+    })
+  }
+  if(err){
+    return res.status(500).json({
+      message:"server side errot"
+    })
+  }
+  })
+});
+
+
+
+app.get("/getMessage",(req,res)=>{
+ MessageModel.find().then((data,err)=>{
+  return res.status(200).json(
+    {
+      message:data
+    }
+  )
+ })
 })
 
 serverInstance.listen(PORT,()=>{
