@@ -25,7 +25,8 @@ const io = new Server(serverInstance,{cors: {
   }});
 //we have established a connection
 io.on('connection',(socket)=>{
- 
+    // console.log(socket.id + "$");
+    // const address = socket.handshake.query["address"];
     //we are listening the events
    socket.on("chat",(payload)=>{
      io.emit("chat",payload);
