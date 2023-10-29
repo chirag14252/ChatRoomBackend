@@ -11,8 +11,8 @@ const app = express();
 
 app.use(json());
 app.use(cors());
-const PORT = 3000;
-const mongoDB_URL = process.env.URL;
+const PORT = process.env.PORT||3000;
+const mongoDB_URL = process.env.URL_MONGO;
 mongoose.connect(`${mongoDB_URL}`).then(()=>{
   console.log("database connected successfully");
 })
@@ -67,3 +67,6 @@ app.get("/getMessage",(req,res)=>{
 serverInstance.listen(PORT,()=>{
     console.log("server is running at the port "+PORT);
 })
+
+
+
