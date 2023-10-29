@@ -66,7 +66,9 @@ app.get("/getMessage",(req,res)=>{
 
 
 app.get("/",(req,res)=>{
-  return res.send("your server is running fine");
+  return res.status(200).json({
+    message:"server is running successfully"
+  })
 })
 serverInstance.listen(PORT,()=>{
     console.log("server is running at the port "+PORT);
