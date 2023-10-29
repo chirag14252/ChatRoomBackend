@@ -64,6 +64,10 @@ app.get("/getMessage",(req,res)=>{
  })
 })
 
+
+app.get("/",(req,res)=>{
+  return res.send("your server is running fine");
+})
 serverInstance.listen(PORT,()=>{
     console.log("server is running at the port "+PORT);
 })
